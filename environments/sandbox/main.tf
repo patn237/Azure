@@ -6,7 +6,11 @@ module "base_infra" {
 
   location = "northcentralus"
 
-  vnet_address_space = ["10.10.0.0/24"]
+  hub_vnet_address_space = ["10.10.0.0/24"]
+  hub_subnet_address_prefix = ["10.10.0.0/28"]
+
+  spoke_vnet_address_space = ["10.10.1.0/24"]
+  spoke_subnet_address_prefix = ["10.10.1.0/28"]
 
   custom_tags = {
     "Builtby" = "Patrick"

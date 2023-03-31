@@ -15,7 +15,19 @@ variable "location" {
   type = string
   description = "The Azure Region where the Resource Group should exist."
 }
-variable "vnet_address_space" {
+variable "hub_vnet_address_space" {
   type = list(string)
   description = "The address space that is used the virtual network. You can supply more than one address space."
+}
+variable "hub_subnet_address_prefix" {
+  type = list(string)
+  description = "The address prefixes to use for the subnet."
+}
+variable "spoke_vnet_address_space" {
+  type = list(string)
+  description = "The address space that is used the virtual network. You can supply more than one address space."
+}
+variable "spoke_subnet_address_prefix" {
+  type = list(string)
+  description = "The address prefixes to use for the subnet."
 }
