@@ -6,7 +6,7 @@ on:
       name:
         type: choice
         required: true
-        description: 'Choose which environment you want to deploy'
+        description: 'Choose which environment you want to destroy'
         default: 'sandbox'
         options:
           - sandbox
