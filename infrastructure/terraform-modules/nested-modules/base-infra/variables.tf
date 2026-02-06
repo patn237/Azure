@@ -76,3 +76,17 @@ variable "subnets" {
   }))
   description = "A list of objects used to configure the subnets created within the virtual network."
 }
+
+variable "route_tables" {
+  type = list(object({
+    route_table_name = string
+    udr_routes = optional(list(object({
+      name                   = string
+      address_prefix         = string
+      next_hop_type          = string
+      next_hop_in_ip_address = optional(string)
+    })), [])
+  }))
+  description = "List of objects used to create the primary virtual network's route tables."
+  default     = []
+}

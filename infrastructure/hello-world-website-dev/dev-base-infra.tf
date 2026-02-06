@@ -20,6 +20,8 @@ module "dev_base_infra" {
       subnet_overrides = {
         override_naming_convention = false
         create_subnet_nsg          = true
+        udr_association            = false
+        udr_name_to_associate_to   = local.resource_names
       }
     },
   ]

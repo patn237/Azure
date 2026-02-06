@@ -56,3 +56,29 @@ module "snet" {
 
   tags = var.tags
 }
+
+module "udr" {
+  source   = "../../modules/terraform-azurerm-udr"
+  for_each = { for route_table in var.route_tables : route_table.route_table_name => route_table }
+
+  rt_name = each.key
+
+  az_region = var.az_region
+  rsg_name  = module.rsg.name
+
+  udr_routes = each.value.udr_routes
+
+  tags = var.tags
+}
+
+resource "azurerm_subnet_route_table_association" "rt_association" {
+  for_each = { for subnet in var.subnets : subnet.subnet_name => subnet if subnet.subnet_overrides.udr_association == true }
+
+  subnet_id      = join(",", module.snet[each.value.subnet_name].subnet_id)
+  route_table_id = module.udr[each.value.subnet_overrides.udr_name_to_associate_to].rt_table_id
+
+  depends_on = [
+    module.udr,
+    module.snet
+  ]
+}
