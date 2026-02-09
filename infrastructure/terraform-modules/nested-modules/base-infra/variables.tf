@@ -90,3 +90,93 @@ variable "route_tables" {
   description = "List of objects used to create the primary virtual network's route tables."
   default     = []
 }
+
+variable "azurerm_tenant_id" {
+  type        = string
+  description = "The Tenant ID where this environment resides."
+}
+
+variable "keyvault_name" {
+  type        = string
+  description = "Specify the name of the Key Vault."
+}
+
+variable "keyvault_private_dns_zone_id" {
+  type        = string
+  description = "Specifies the Key Vault Private DNS Zone to include."
+}
+
+variable "enable_network_acls" {
+  type        = bool
+  description = "Toggle Flag to enable/disable network access lists"
+  default     = false
+}
+variable "traffic_bypass" {
+  type        = string
+  description = "Specifies which traffic can bypass the network rules. Possible values are AzureServices and None"
+  default     = "None"
+}
+
+variable "default_action" {
+  type        = string
+  description = "The Default Action to use when no rules match"
+  default     = "Allow"
+}
+
+variable "public_ips" {
+  type        = list(string)
+  description = "List of public IP or IP ranges in CIDR Format. Only IPV4 addresses are allowed."
+  default     = []
+}
+
+variable "virtual_network_subnet_ids" {
+  type        = list(string)
+  description = "One or more Subnet IDs which should be able to access this Key Vault."
+  default     = []
+}
+
+variable "keyvault_public_network_access_enabled" {
+  type        = bool
+  description = "Whether public network access is allowed for this Key Vault."
+  default     = false
+}
+
+variable "private_endpoint_subnet_name" {
+  type        = string
+  description = "Subnet Name Used to uniquely identify the  Private Endpoints Subnet."
+}
+
+variable "storage_account_name" {
+  type        = string
+  description = "The name used for the Storage Account."
+}
+
+variable "storage_account_replication_type" {
+  type        = string
+  description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS."
+}
+
+variable "blob_containers" {
+  type        = list(string)
+  description = "List of storage account containers to create within the storage account"
+  default     = []
+}
+
+variable "blob_container_private_dns_zone_id" {
+  type        = string
+  description = "The ID of the Subnet from which Private IP Addresses will be allocated for this Private Endpoint."
+}
+
+variable "file_share_private_dns_zone_id" {
+  type        = string
+  description = "The ID of the Subnet from which Private IP Addresses will be allocated for this Private Endpoint."
+}
+
+variable "storage_account_file_shares" {
+  type = list(object({
+    file_share_name     = string
+    file_share_quota_gb = number
+  }))
+  description = "List of objects used to create file shares within the storage account"
+  default     = []
+}

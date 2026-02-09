@@ -82,3 +82,76 @@ resource "azurerm_subnet_route_table_association" "rt_association" {
     module.snet
   ]
 }
+
+module "key_vault" {
+  source = "../../modules/terraform-azurerm-keyvault"
+
+  rsg_name  = module.rsg.name
+  az_region = var.az_region
+
+  azurerm_tenant_id = var.azurerm_tenant_id
+
+  name = var.keyvault_name
+
+  keyvault_sku = "standard"
+
+  soft_delete_retention_days = "7"
+
+  enable_rbac_authorization = true
+
+  enable_network_acls        = var.enable_network_acls
+  traffic_bypass             = var.traffic_bypass
+  default_action             = var.default_action
+  public_ips                 = var.public_ips
+  virtual_network_subnet_ids = var.virtual_network_subnet_ids
+
+  private_endpoints = [
+    {
+      sub_resource_name   = "vault"
+      dns_zone_group      = "default"
+      private_dns_zone_id = var.keyvault_private_dns_zone_id
+    }
+  ]
+
+  public_network_access_enabled = var.keyvault_public_network_access_enabled
+
+  private_endpoint_subnet_id = join(",", module.snet[var.private_endpoint_subnet_name].subnet_id)
+
+  tags = var.tags
+}
+
+module "storage_account" {
+  source = "../../modules/terraform-azurerm-storage-account"
+
+  rsg_name  = module.rsg.name
+  az_region = var.az_region
+
+  stor_acc_name = var.storage_account_name
+
+  kind             = "StorageV2"
+  tier             = "Standard"
+  replication_type = var.storage_account_replication_type
+
+  file_shares = var.storage_account_file_shares
+
+  enable_network_rules = false
+
+  blob_containers = var.blob_containers
+
+  private_endpoints = [
+    {
+      sub_resource_name   = "blob"
+      dns_zone_group      = "default"
+      private_dns_zone_id = var.blob_container_private_dns_zone_id
+    },
+    {
+      sub_resource_name   = "file"
+      dns_zone_group      = "default"
+      private_dns_zone_id = var.file_share_private_dns_zone_id
+    }
+  ]
+
+  private_endpoint_subnet_id = join(",", module.snet[var.private_endpoint_subnet_name].subnet_id)
+
+  tags = var.tags
+}
