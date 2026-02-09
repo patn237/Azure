@@ -1,5 +1,5 @@
 module "dev_base_infra" {
-  source = "../terraform-modules/nested-modules/base-infra"
+  source = "../terraform-modules/nested-modules/spoke-base-infra"
 
   rsg_name  = join("-", ["rg", local.resource_names])
   az_region = local.az_region
