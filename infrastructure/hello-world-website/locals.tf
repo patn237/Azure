@@ -1,7 +1,7 @@
 locals {
   az_region = "northcentralus"
 
-  environment = "dev"
+  environment = "sandbox"
 
   application = "hello-world"
 
